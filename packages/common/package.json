@@ -1,0 +1,8 @@
+{
+  "name": "@litsurvey/common",
+  "version": "0.0.0",
+  "description": "the shared files among the backend and the frontend for LitSurveys",
+  "author": "Aadvik<aadv1k@outlook.com>",
+  "license": "MIT",
+  "private": true
+}
