@@ -1,3 +1,3 @@
 {
-  "extends": "./config/ts.config.js"
+  "extends": "./config/ts.config.json"
 }

@@ -1,6 +1,8 @@
 {
   "name": "litsurveys",
   "packageManager": "yarn@3.5.1",
+  "license": "MIT",
+  "private": true,
   "workspaces": [
     "./packages/*"
   ],
