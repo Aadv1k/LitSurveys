@@ -1,0 +1,3 @@
+{
+  "extends": "./config/ts.config.js"
+}
