@@ -2,34 +2,39 @@ import { DataTypes } from 'sequelize'
 
 import DB from './bootstrap'
 
-const UserModel = {
+const SurveyModel = {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
     allowNull: false
   },
 
-  username: {
+  user_id: {
     type: DataTypes.STRING,
     allowNull: false
   },
 
-  email: {
+  title: {
     type: DataTypes.STRING,
     allowNull: false
   },
 
-  password: {
+  description: {
     type: DataTypes.STRING,
     allowNull: false
   },
 
-  type: {
+  status: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
+  },
+
+  maxResposnes: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }
 
-const table = DB.define('users', UserModel)
+const table = DB.define('surveys', SurveyModel)
 table.sync();
 export default table;
