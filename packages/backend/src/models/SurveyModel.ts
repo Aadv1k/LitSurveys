@@ -36,5 +36,5 @@ const SurveyModel = {
 }
 
 const table = DB.define('surveys', SurveyModel)
-table.sync();
-export default table;
+table.sync()
+export default table

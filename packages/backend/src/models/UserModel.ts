@@ -31,5 +31,5 @@ const UserModel = {
 }
 
 const table = DB.define('users', UserModel)
-table.sync();
-export default table;
+table.sync()
+export default table
