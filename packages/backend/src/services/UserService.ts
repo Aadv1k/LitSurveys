@@ -1,20 +1,5 @@
 import UserModel from '../models/UserModel'
-//import { User, UserType } from '../../../common/types/user'
-
-
-export enum UserType {
-  surveyor = "surveyor",
-  surveyee = "surveyee",
-  any = "any"
-}
-
-export interface User {
-  id: string,
-  username: string,
-  email: string,
-  password: string,
-  type: UserType
-}
+import { User, UserType } from '@litsurvey/common/types/user'
 
 export default class {
   public static async createUser(user: User): Promise<User> {
@@ -40,7 +25,7 @@ export default class {
     )
 
     if (updatedUser[0] === 0) {
-      return null;
+      return null
     }
 
     const updatedUserData = await UserModel.findByPk(user.id)
@@ -49,13 +34,12 @@ export default class {
   }
 
   public static async deleteUserById(id: string): Promise<boolean> {
-    const deletedUserCount = await UserModel.destroy({ where: { id } });
+    const deletedUserCount = await UserModel.destroy({ where: { id } })
 
     if (deletedUserCount === 0) {
-      return false;
+      return false
     }
 
-    return true;
+    return true
   }
 }
-

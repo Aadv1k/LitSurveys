@@ -1,6 +1,6 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize'
 
-import DB from "./bootstrap";
+import DB from './bootstrap'
 
 const UserModel = {
   id: {
@@ -30,6 +30,6 @@ const UserModel = {
   }
 }
 
-const table = DB.define("users", UserModel);
-table.sync();
-export default table;
+const table = DB.define('users', UserModel)
+table.sync()
+export default table

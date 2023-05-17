@@ -3,6 +3,6 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-  },
+    "resolveJsonModule": true
+  }
 }
