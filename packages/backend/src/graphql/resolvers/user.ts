@@ -1,4 +1,4 @@
-import { User, UserType } from '@common/user'
+import { User, UserType } from '@litsurvey/common'
 import { CommonContext } from '../../types'
 import { JWT_SECRET } from '../../const'
 import UserService from '../../services/UserService'
@@ -11,18 +11,26 @@ interface ReturnUser {
   token?: string
 }
 
-async function createUser(_: any, args: User, __: any): Promise<ReturnUser> {
-  if (args.type !== 'surveyor' && args.type !== 'surveyee') {
+async function createUser(input: {input: User}, args: User, __: any): Promise<ReturnUser> {
+  const data = input.input as User;
+  if (data.type !== 'surveyor' && data.type !== 'surveyee') {
     throw new Error('Invalid user type')
   }
 
   const userToCreate = {
     id: 'random',
-    username: args.username,
-    email: args.email,
-    password: args.password,
-    type: args.type
+    username: data.username,
+    email: data.email,
+    password: data.password,
+    type: data.type
   } as User
+
+
+  const foundUser = await UserService.getUserByEmail(userToCreate.email)
+
+  if (foundUser) {
+    throw new Error("User already exists!");
+  }
 
   const createdUser = await UserService.createUser(userToCreate)
 
@@ -45,10 +53,12 @@ async function createUser(_: any, args: User, __: any): Promise<ReturnUser> {
 
 async function getUser(
   _: any,
-  args: User,
-  context: CommonContext
+  args: CommonContext,
+  __: any
 ): Promise<ReturnUser> {
-  const token = context.req.headers?.authorization
+  const token = args.req.headers?.authorization
+
+
 
   if (!token) {
     throw new Error('Unauthorized') // TODO: Make this a proper error

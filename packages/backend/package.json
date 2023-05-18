@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
-    "postbuild": "mkdir -p dist/graphql && cp -r ./src/graphql/schemas/*.graphql dist/graphql/"
+    "postbuild": "mkdir -p dist/graphql && cp -r ./src/graphql/schemas/*.graphql dist/graphql/schemas"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
@@ -15,6 +15,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@litsurvey/common": "../common",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",

@@ -6,10 +6,17 @@ import GraphQLResolvers from "./graphql/resolvers/";
 
 const app = express()
 
-app.use('/graphql', graphqlHTTP({
-  schema: GraphQLSchema,
-  rootValue: GraphQLResolvers,
-  graphiql: true // Enable the GraphiQL UI
-}));
+
+const GraphQLMiddleware = graphqlHTTP((req, res) => {
+  return {
+      schema: GraphQLSchema,
+      rootValue: GraphQLResolvers,
+      graphiql: true,
+      context: {req, res}
+    }
+})
+
+
+app.use('/graphql', GraphQLMiddleware);
 
 export default app
