@@ -1,5 +1,5 @@
 import UserModel from '../models/UserModel'
-import { User, UserType } from '@litsurvey/types/user'
+import { User, UserType } from '@common/user'
 
 export default class {
   public static async getUserByEmail(email: string): Promise<User | null> {

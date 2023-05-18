@@ -8,7 +8,7 @@
     "baseUrl": ".",
     "typeRoots": ["../types"],
     "paths": {
-      "@litsurvey/types/*": ["../types/"]
+      "@common/*": ["../common/types/*"]
     }
   },
   "include": ["./src/*.ts"]

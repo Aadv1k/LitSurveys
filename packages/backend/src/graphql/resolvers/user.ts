@@ -1,4 +1,4 @@
-import { User, UserType } from '@litsurvey/types/dist/user'
+import { User, UserType } from '@common/user'
 import { CommonContext } from '../../types'
 import { JWT_SECRET } from '../../const'
 import UserService from '../../services/UserService'
