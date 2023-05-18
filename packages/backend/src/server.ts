@@ -1,22 +1,30 @@
-import express from 'express'
+import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 
 import GraphQLSchema from "./graphql/schemas/";
 import GraphQLResolvers from "./graphql/resolvers/";
 
-const app = express()
+import RouteRegister from "./routes/register";
 
+const app = express();
 
 const GraphQLMiddleware = graphqlHTTP((req, res) => {
   return {
-      schema: GraphQLSchema,
-      rootValue: GraphQLResolvers,
-      graphiql: true,
-      context: {req, res}
-    }
-})
+    schema: GraphQLSchema,
+    rootValue: GraphQLResolvers,
+    graphiql: true,
+    context: { req, res }
+  };
+});
 
+app.use(express.json());
 
 app.use('/graphql', GraphQLMiddleware);
 
-export default app
+app.get("/", (req, res) => {
+  res.send("You got bamboozled");
+});
+
+app.post("/auth/register", RouteRegister);
+
+export default app;
