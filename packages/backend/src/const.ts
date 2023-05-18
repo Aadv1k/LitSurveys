@@ -15,8 +15,8 @@ export const PG_CONFIG = {
   username: process.env.PG_USERNAME
 }
 
-export const JWT_SECRET = "to-be-changed"
+export const JWT_SECRET = 'to-be-changed'
 
 export const ERRORS = {
-  INTERNAL_ERROR: "internal_error"
+  INTERNAL_ERROR: 'internal_error'
 }

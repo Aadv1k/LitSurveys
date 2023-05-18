@@ -1,17 +1,17 @@
 import UserModel from '../models/UserModel'
-import { User, UserType } from '@litsurvey/common/types/user'
+import { User, UserType } from '@litsurvey/types/user'
 
 export default class {
   public static async getUserByEmail(email: string): Promise<User | null> {
-    const foundUser = await UserModel.findOne({ where: { email: email } });
+    const foundUser = await UserModel.findOne({ where: { email: email } })
     if (!foundUser) {
-      return null;
+      return null
     }
 
-    return foundUser.toJSON() as User;
+    return foundUser.toJSON() as User
   }
 
-public static async createUser(user: User): Promise<User> {
+  public static async createUser(user: User): Promise<User> {
     const createdUser = await UserModel.create({
       id: user.id,
       username: user.username,

@@ -6,8 +6,9 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "baseUrl": ".",
+    "typeRoots": ["../types"],
     "paths": {
-      "*": ["../../node_modules/*"]
+      "@litsurvey/types/*": ["../types/"]
     }
   },
   "include": ["./src/*.ts"]

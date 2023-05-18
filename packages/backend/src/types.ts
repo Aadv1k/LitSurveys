@@ -1,5 +1,5 @@
-import { Response, Request } from "express";
+import { Response, Request } from 'express'
 export interface CommonContext {
-  req: Request,
+  req: Request
   res: Response
-} 
+}
