@@ -1,15 +1,21 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
-    "typeRoots": ["../types"],
+    "typeRoots": ["./node_modules/@types", "../common/types"],
     "paths": {
       "@common/*": ["../common/types/*"]
     }
   },
-  "include": ["./src/*.ts"]
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

@@ -1,1 +1,1 @@
-const  
+export default {  }
