@@ -12,6 +12,7 @@
     "@types/graphql": "^14.5.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/sequelize": "^4.28.15",
+    "@types/uuid": "^9.0.1",
     "typescript": "^5.0.4"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.11.0",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "uuid": "^9.0.0"
   }
 }

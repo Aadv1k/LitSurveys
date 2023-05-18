@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import Ajv from "ajv";
 
-
 import jwt from 'jsonwebtoken'
+
+import { v4 as uuid } from "uuid";
 
 import { ErrorCodes, JWT_SECRET } from "../const";
 import { sendErrorResponse, sendJSONResponse } from "../utils";
@@ -15,6 +16,15 @@ import UserService from '../services/UserService'
 import RegisterSchema from "../httpSchemas/register" ;
 
 const ajv = new Ajv({ allErrors: true });
+
+ajv.addFormat('email', {
+		type: 'string',
+		validate: (value: string) => {
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				return emailRegex.test(value);
+		},
+});
+
 
 export default async function (req: Request, res: Response) {
   let body: RegisterUser;
@@ -32,7 +42,6 @@ export default async function (req: Request, res: Response) {
     return;
   }
 
-
   const isBodyValid = ajv.validate(RegisterSchema, body);
   if (!isBodyValid)  {
     sendErrorResponse(res, {
@@ -48,7 +57,7 @@ export default async function (req: Request, res: Response) {
 
   const userToCreate = {
     ...body,
-    id: "TODO, CHANGE THIS"
+    id: uuid(),
   } as User;
 
   const foundUser = await UserService.getUserByEmail(body.email)

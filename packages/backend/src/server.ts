@@ -7,6 +7,8 @@ import GraphQLResolvers from "./graphql/resolvers/";
 import RouteRegister from "./routes/register";
 
 const app = express();
+app.use(express.json());
+
 
 const GraphQLMiddleware = graphqlHTTP((req, res) => {
   return {
@@ -16,8 +18,6 @@ const GraphQLMiddleware = graphqlHTTP((req, res) => {
     context: { req, res }
   };
 });
-
-app.use(express.json());
 
 app.use('/graphql', GraphQLMiddleware);
 
