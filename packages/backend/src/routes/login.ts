@@ -29,6 +29,8 @@ ajv.addFormat('email', {
 export default async function (req: Request, res: Response) {
   let body: LoginUser;
 
+  console.log(req.cookies);
+
   try {
     body = req.body;
   } catch (err) {
@@ -86,18 +88,24 @@ export default async function (req: Request, res: Response) {
 
   }
 
+
+
+  const jwtToken = jwt.sign( {
+          username: foundUser.username,
+          email: foundUser.email
+        },
+        JWT_SECRET,
+        {
+          expiresIn: "30m"
+        }
+      )
+
+  res.cookie("litsurvey-token", jwtToken, { httpOnly: true });
   sendJSONResponse(res, {
     data: {
       username: foundUser.username,
       email: foundUser.email,
-      token: jwt.sign(
-        {
-          username: foundUser.username,
-          email: foundUser.email
-        },
-        JWT_SECRET
-      )
     },
-    status: 201
-  }, 201)
+    status: 200
+  }, 200)
 }

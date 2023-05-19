@@ -10,8 +10,7 @@ const schema = {
       "type": "string"
     },
     "password": {
-      "type": "string",
-      minLength: 8,
+      "type": "string"
     }
   },
   "anyOf": [

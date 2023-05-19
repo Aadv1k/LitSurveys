@@ -86,18 +86,24 @@ export default async function (req: Request, res: Response) {
     return;
   }
 
+  const jwtToken = jwt.sign( {
+          username: createdUser.username,
+          email: createdUser.email
+        },
+        JWT_SECRET,
+        {
+          expiresIn: "30m"
+        }
+
+      )
+
+
+  res.cookie("litsurvey-token", jwtToken, { httpOnly: true });
   sendJSONResponse(res, {
     data: {
       username: createdUser.username,
       email: createdUser.email,
-      token: jwt.sign(
-        {
-          username: createdUser.username,
-          email: createdUser.email
-        },
-        JWT_SECRET
-      )
     },
-    status: 201
-  }, 201)
+    status: 200
+  }, 200)
 }

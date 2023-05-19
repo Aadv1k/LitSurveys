@@ -11,8 +11,11 @@ import GraphQLResolvers from "./graphql/resolvers/";
 import RouteRegister from "./routes/register";
 import RouteLogin from "./routes/login";
 
+import cookieParser from "cookie-parser";
+
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 
 const GraphQLMiddleware = graphqlHTTP((req, res) => {
