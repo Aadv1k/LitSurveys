@@ -28,7 +28,6 @@ class SessionService {
     }
   }
 
-
   async push(key: string, sessionInfo: any): Promise<string> {
     try {
       const resp = await this.client.set(key, JSON.stringify(sessionInfo))
@@ -43,7 +42,7 @@ class SessionService {
       const resp = await this.client.get(key)
       return JSON.parse(resp as string)
     } catch (err) {
-      return null;
+      return null
     }
   }
 

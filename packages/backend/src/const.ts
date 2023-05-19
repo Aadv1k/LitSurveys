@@ -29,7 +29,7 @@ export enum ErrorCodes {
   USER_NOT_FOUND = 'user_not_found',
   EXTERNAL_SERVICE = 'external_service_error',
   RESOURCE_NOT_FOUND = 'resource_not_found_error',
-  UNAUTHORIZED = "unauthorized",
+  UNAUTHORIZED = 'unauthorized',
   BAD_INPUT = 'bad_input',
   NOT_FOUND = 'not_found',
   INVALID_PASSWORD = 'invalid_password',

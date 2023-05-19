@@ -1,73 +1,66 @@
 import { Request, Response } from 'express'
 import Ajv from 'ajv'
-
 import SessionService from '../services/SessionService'
 
 import { ErrorCodes } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
-import { RegisterUser } from '../types'
+
+import md5 from 'md5'
 
 import { User } from '@litsurvey/common'
 
 import { v4 as uuid } from 'uuid'
 import UserService from '../services/UserService'
 
-import RegisterSchema from '../httpSchemas/register'
+//import passport from "passport";
 
-const ajv = new Ajv({ allErrors: true })
+export default async function (req: Request, res: Response, passportUser: any) {
+  const user = passportUser
 
-ajv.addFormat('email', {
-  type: 'string',
-  validate: (value: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(value)
-  }
-})
-
-export default async function (req: Request, res: Response) {
-  let body: RegisterUser
-
-  try {
-    body = req.body
-  } catch (err) {
+  if (!user) {
     sendErrorResponse(res, {
       error: {
-        code: ErrorCodes.BAD_INPUT,
-        message: 'Invalid JSON data'
+        code: ErrorCodes.INTERNAL_ERROR,
+        message: 'Something went wrong in OAuth process'
       },
-      status: 400
-    })
-    return
-  }
-
-  const isBodyValid = ajv.validate(RegisterSchema, body)
-  if (!isBodyValid) {
-    sendErrorResponse(res, {
-      error: {
-        code: ErrorCodes.BAD_INPUT,
-        message: 'Bad input',
-        details: ajv.errors
-      },
-      status: 400
+      status: 500
     })
     return
   }
 
   const userToCreate = {
-    ...body,
-    id: uuid()
+    email: user.email,
+    password: md5(uuid()),
+    username: user.displayName,
+    id: uuid(),
+    type: 'surveyee'
   } as User
 
-  const foundUser = await UserService.getUserByEmail(body.email)
+  const foundUser = await UserService.getUserByEmail(userToCreate.email)
+
+  const sessionID = md5(user.email)
 
   if (foundUser) {
-    sendErrorResponse(res, {
-      error: {
-        code: ErrorCodes.BAD_INPUT,
-        message: 'User has already registered'
-      },
-      status: 400
+    await SessionService.push(sessionID, {
+      username: foundUser.username,
+      email: foundUser.email,
+      type: foundUser.type
     })
+
+    res.cookie('litsurvey-session', sessionID, { httpOnly: true })
+
+    sendJSONResponse(
+      res,
+      {
+        data: {
+          username: foundUser.username,
+          email: foundUser.email,
+          type: foundUser.type
+        },
+        status: 200
+      },
+      200
+    )
     return
   }
 
@@ -84,7 +77,6 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-  const sessionID = uuid()
   await SessionService.push(sessionID, {
     username: createdUser.username,
     email: createdUser.email,

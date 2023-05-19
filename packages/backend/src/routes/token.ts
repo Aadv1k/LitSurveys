@@ -4,11 +4,10 @@ import jwt from 'jsonwebtoken'
 
 import { ErrorCodes, JWT_SECRET } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
-import SessionService from "../services/SessionService"
-
+import SessionService from '../services/SessionService'
 
 export default async function (req: Request, res: Response) {
-  const sessionID = req.cookies["litsurvey-session"];
+  const sessionID = req.cookies['litsurvey-session']
 
   if (!sessionID) {
     sendErrorResponse(res, {
@@ -21,7 +20,7 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-  const foundUser = await SessionService.get(sessionID) as any;
+  const foundUser = (await SessionService.get(sessionID)) as any
 
   if (!foundUser) {
     sendErrorResponse(res, {
@@ -44,7 +43,6 @@ export default async function (req: Request, res: Response) {
       expiresIn: '30m' // THIS IS A BIT SUS
     }
   )
-
 
   sendJSONResponse(
     res,

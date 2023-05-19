@@ -4,13 +4,12 @@ import { Request, Response } from 'express'
 //import { ErrorCodes, JWT_SECRET } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
 
-import SessionService from "../services/SessionService"
-
+import SessionService from '../services/SessionService'
 
 export default async function (req: Request, res: Response) {
-  const sessionID = req.cookies["litsurvey-session"];
+  const sessionID = req.cookies['litsurvey-session']
 
-  await SessionService.delete(sessionID);
+  await SessionService.delete(sessionID)
 
   sendJSONResponse(
     res,

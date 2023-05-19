@@ -1,16 +1,14 @@
 import { Request, Response } from 'express'
 import Ajv from 'ajv'
 
-import jwt from 'jsonwebtoken'
-
 import { ErrorCodes, JWT_SECRET } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
 import { LoginUser } from '../types'
 
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid'
 
 import UserService from '../services/UserService'
-import SessionService from "../services/SessionService"
+import SessionService from '../services/SessionService'
 
 import LoginSchema from '../httpSchemas/login'
 
@@ -83,13 +81,12 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-
-  const sessionID = uuid();
+  const sessionID = uuid()
   await SessionService.push(sessionID, {
-     username: foundUser.username,
-     email: foundUser.email,
-     type: foundUser.type,
-  });
+    username: foundUser.username,
+    email: foundUser.email,
+    type: foundUser.type
+  })
 
   res.cookie('litsurvey-session', sessionID, { httpOnly: true })
 
