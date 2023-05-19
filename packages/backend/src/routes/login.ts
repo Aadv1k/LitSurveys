@@ -3,15 +3,14 @@ import Ajv from 'ajv'
 
 import jwt from 'jsonwebtoken'
 
-import { v4 as uuid } from 'uuid'
-
 import { ErrorCodes, JWT_SECRET } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
 import { LoginUser } from '../types'
 
-import { User } from '@litsurvey/common'
+import { v4 as uuid } from "uuid";
 
 import UserService from '../services/UserService'
+import SessionService from "../services/SessionService"
 
 import LoginSchema from '../httpSchemas/login'
 
@@ -27,8 +26,6 @@ ajv.addFormat('email', {
 
 export default async function (req: Request, res: Response) {
   let body: LoginUser
-
-  console.log(req.cookies)
 
   try {
     body = req.body
@@ -86,18 +83,16 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-  const jwtToken = jwt.sign(
-    {
-      username: foundUser.username,
-      email: foundUser.email
-    },
-    JWT_SECRET,
-    {
-      expiresIn: '30m'
-    }
-  )
 
-  res.cookie('litsurvey-token', jwtToken, { httpOnly: true })
+  const sessionID = uuid();
+  await SessionService.push(sessionID, {
+     username: foundUser.username,
+     email: foundUser.email,
+     type: foundUser.type,
+  });
+
+  res.cookie('litsurvey-session', sessionID, { httpOnly: true })
+
   sendJSONResponse(
     res,
     {

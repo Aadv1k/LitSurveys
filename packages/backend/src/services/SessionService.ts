@@ -1,11 +1,11 @@
-import { createClient } from 'redis'
+import * as redis from 'redis'
 import { REDIS_CONFIG } from '../const'
 
 class SessionService {
-  client: any
+  client: redis.RedisClientType
 
   constructor() {
-    this.client = createClient({
+    this.client = redis.createClient({
       socket: {
         host: REDIS_CONFIG.host,
         port: REDIS_CONFIG.port
@@ -19,7 +19,17 @@ class SessionService {
     await this.client.connect()
   }
 
-  async pushSession(key: string, sessionInfo: any): Promise<string> {
+  async delete(key: string) {
+    try {
+      const resp = await this.client.del(key)
+      return key
+    } catch (err) {
+      throw err
+    }
+  }
+
+
+  async push(key: string, sessionInfo: any): Promise<string> {
     try {
       const resp = await this.client.set(key, JSON.stringify(sessionInfo))
       return key
@@ -28,17 +38,17 @@ class SessionService {
     }
   }
 
-  async getSession(key: string): Promise<Array<boolean> | null> {
+  async get(key: string): Promise<any | null> {
     try {
       const resp = await this.client.get(key)
-      return JSON.parse(resp ?? '{}')
+      return JSON.parse(resp as string)
     } catch (err) {
-      throw err
+      return null;
     }
   }
 
   async close() {
-    this.client.close()
+    this.client.quit()
   }
 }
 
