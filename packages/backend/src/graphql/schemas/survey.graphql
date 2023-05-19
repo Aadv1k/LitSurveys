@@ -1,0 +1,22 @@
+type Survey {
+  title: String!
+  description: String!
+  status: String!
+  max_responses: Number!
+}
+
+input SurveyInput {
+  title: String!
+  description: String!
+  status: String!
+  max_responses: Number!
+}
+
+type Mutation {
+  createSurvey(input: SurveyInput!): Survey
+  deleteSurvey(id: String!): Survey
+}
+
+type Query {
+  survey: [Survey!]
+} 

@@ -16,23 +16,18 @@ export default class {
       },
       { where: { id: survey.id } }
     )
-
     if (updatedSurvey[0] === 0) {
       return null
     }
-
     const updatedUserData = await SurveyModel.findByPk(survey.id)
-
     return updatedUserData?.toJSON() as Survey
   }
 
   public static async deleteSurveyById(id: string): Promise<boolean> {
     const deletedSurveyCount = await SurveyModel.destroy({ where: { id } })
-
     if (deletedSurveyCount === 0) {
       return false
     }
-
     return true
   }
 }
