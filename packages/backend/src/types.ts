@@ -1,5 +1,5 @@
 import { Response, Request } from 'express'
-import { UserType } from "@litsurvey/common/types/user";
+import { UserType } from '@litsurvey/common/types/user'
 
 export interface CommonContext {
   req: Request

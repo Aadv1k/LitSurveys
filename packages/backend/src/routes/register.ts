@@ -1,64 +1,63 @@
-import { Request, Response } from "express";
-import Ajv from "ajv";
+import { Request, Response } from 'express'
+import Ajv from 'ajv'
 
 import jwt from 'jsonwebtoken'
 
-import { v4 as uuid } from "uuid";
+import { v4 as uuid } from 'uuid'
 
-import { ErrorCodes, JWT_SECRET } from "../const";
-import { sendErrorResponse, sendJSONResponse } from "../utils";
-import { RegisterUser } from "../types";
+import { ErrorCodes, JWT_SECRET } from '../const'
+import { sendErrorResponse, sendJSONResponse } from '../utils'
+import { RegisterUser } from '../types'
 
-import { User } from "@litsurvey/common";
+import { User } from '@litsurvey/common'
 
 import UserService from '../services/UserService'
 
-import RegisterSchema from "../httpSchemas/register" ;
+import RegisterSchema from '../httpSchemas/register'
 
-const ajv = new Ajv({ allErrors: true });
+const ajv = new Ajv({ allErrors: true })
 
 ajv.addFormat('email', {
-		type: 'string',
-		validate: (value: string) => {
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				return emailRegex.test(value);
-		},
-});
-
+  type: 'string',
+  validate: (value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(value)
+  }
+})
 
 export default async function (req: Request, res: Response) {
-  let body: RegisterUser;
+  let body: RegisterUser
 
   try {
-    body = req.body;
+    body = req.body
   } catch (err) {
     sendErrorResponse(res, {
       error: {
         code: ErrorCodes.BAD_INPUT,
-        message: "Invalid JSON data",
+        message: 'Invalid JSON data'
       },
       status: 400
     })
-    return;
+    return
   }
 
-  const isBodyValid = ajv.validate(RegisterSchema, body);
-  if (!isBodyValid)  {
+  const isBodyValid = ajv.validate(RegisterSchema, body)
+  if (!isBodyValid) {
     sendErrorResponse(res, {
       error: {
         code: ErrorCodes.BAD_INPUT,
-        message: "Bad input",
-        details: ajv.errors,
+        message: 'Bad input',
+        details: ajv.errors
       },
       status: 400
     })
-    return;
+    return
   }
 
   const userToCreate = {
     ...body,
-    id: uuid(),
-  } as User;
+    id: uuid()
+  } as User
 
   const foundUser = await UserService.getUserByEmail(body.email)
 
@@ -66,11 +65,11 @@ export default async function (req: Request, res: Response) {
     sendErrorResponse(res, {
       error: {
         code: ErrorCodes.BAD_INPUT,
-        message: "User has already registered",
+        message: 'User has already registered'
       },
       status: 400
     })
-    return;
+    return
   }
 
   const createdUser = await UserService.createUser(userToCreate)
@@ -79,31 +78,35 @@ export default async function (req: Request, res: Response) {
     sendErrorResponse(res, {
       error: {
         code: ErrorCodes.DATABASE_ERROR,
-        message: "Failed to create a new user"
+        message: 'Failed to create a new user'
       },
       status: 500
     })
-    return;
+    return
   }
 
-  const jwtToken = jwt.sign( {
-          username: createdUser.username,
-          email: createdUser.email
-        },
-        JWT_SECRET,
-        {
-          expiresIn: "30m"
-        }
-
-      )
-
-
-  res.cookie("litsurvey-token", jwtToken, { httpOnly: true });
-  sendJSONResponse(res, {
-    data: {
+  const jwtToken = jwt.sign(
+    {
       username: createdUser.username,
-      email: createdUser.email,
+      email: createdUser.email
     },
-    status: 200
-  }, 200)
+    JWT_SECRET,
+    {
+      expiresIn: '30m'
+    }
+  )
+
+  res.cookie('litsurvey-token', jwtToken, { httpOnly: true })
+  sendJSONResponse(
+    res,
+    {
+      data: {
+        username: createdUser.username,
+        email: createdUser.email,
+        type: createdUser.type
+      },
+      status: 200
+    },
+    200
+  )
 }

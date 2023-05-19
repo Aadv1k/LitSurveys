@@ -10,7 +10,9 @@ export default class {
     return foundUser.toJSON() as User
   }
 
-  public static async getUserByUsername(username: string): Promise<User | null> {
+  public static async getUserByUsername(
+    username: string
+  ): Promise<User | null> {
     const foundUser = await UserModel.findOne({ where: { username: username } })
     if (!foundUser) {
       return null

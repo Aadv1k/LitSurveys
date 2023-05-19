@@ -11,8 +11,12 @@ interface ReturnUser {
   token?: string
 }
 
-async function createUser(input: {input: User}, args: User, __: any): Promise<ReturnUser> {
-  const data = input.input as User;
+async function createUser(
+  input: { input: User },
+  args: User,
+  __: any
+): Promise<ReturnUser> {
+  const data = input.input as User
   if (data.type !== 'surveyor' && data.type !== 'surveyee') {
     throw new Error('Invalid user type')
   }
@@ -25,11 +29,10 @@ async function createUser(input: {input: User}, args: User, __: any): Promise<Re
     type: data.type
   } as User
 
-
   const foundUser = await UserService.getUserByEmail(userToCreate.email)
 
   if (foundUser) {
-    throw new Error("User already exists!");
+    throw new Error('User already exists!')
   }
 
   const createdUser = await UserService.createUser(userToCreate)
@@ -57,8 +60,6 @@ async function getUser(
   __: any
 ): Promise<ReturnUser> {
   const token = args.req.headers?.authorization
-
-
 
   if (!token) {
     throw new Error('Unauthorized') // TODO: Make this a proper error

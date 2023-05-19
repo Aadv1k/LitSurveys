@@ -1,28 +1,27 @@
 const schema = {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "email": {
-      "type": "string",
-      "format": "email",
+  $schema: 'http://json-schema.org/draft-07/schema#',
+  type: 'object',
+  properties: {
+    email: {
+      type: 'string',
+      format: 'email'
     },
-    "username": {
-      "type": "string"
+    username: {
+      type: 'string'
     },
-    "password": {
-      "type": "string"
+    password: {
+      type: 'string'
     }
   },
-  "anyOf": [
+  anyOf: [
     {
-      "required": ["username"]
+      required: ['username']
     },
     {
-      "required": ["password"]
+      required: ['password']
     }
   ],
-  "additionalProperties": false
+  additionalProperties: false
 }
 
-
-export default schema;
+export default schema

@@ -3,10 +3,10 @@ const schema = {
   properties: {
     username: { type: 'string' },
     email: { type: 'string', format: 'email' },
-    password: { type: 'string', minLength: 8},
-    type: { enum: ['surveyor', 'surveyee', "any"] },
+    password: { type: 'string', minLength: 8 },
+    type: { enum: ['surveyor', 'surveyee', 'any'] }
   },
-  required: ['username', 'email', 'password', 'type'],
+  required: ['username', 'email', 'password', 'type']
 }
 
-export default schema;
+export default schema
