@@ -67,7 +67,6 @@ export default async function (req: Request, res: Response) {
       error: {
         code: ErrorCodes.BAD_INPUT,
         message: "User has already registered",
-        details: ajv.errors,
       },
       status: 400
     })
@@ -79,7 +78,7 @@ export default async function (req: Request, res: Response) {
   if (!createdUser) {
     sendErrorResponse(res, {
       error: {
-        code: ErrorCodes.INTERNAL_ERROR,
+        code: ErrorCodes.DATABASE_ERROR,
         message: "Failed to create a new user"
       },
       status: 500

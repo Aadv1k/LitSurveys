@@ -19,12 +19,16 @@ export const JWT_SECRET = 'to-be-changed'
 
 export enum ErrorCodes {
   VALIDATION = 'validation_error',
-  DATABASE = 'database_error',
+  DATABASE_ERROR = 'database_error',
+  USER_NOT_FOUND = "user_not_found",
   EXTERNAL_SERVICE = 'external_service_error',
   RESOURCE_NOT_FOUND = 'resource_not_found_error',
   BAD_INPUT = "bad_input",
+  NOT_FOUND = "not_found",
+  INVALID_PASSWORD = "invalid_password",
   TOO_MANY_REQUESTS = "too_many_requests",
   INTERNAL_ERROR = "internal_error",
+  METHOD_INVALID = "method_invalid"
 }
 
 export interface ApiError {
