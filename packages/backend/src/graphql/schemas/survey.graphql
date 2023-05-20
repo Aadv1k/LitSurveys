@@ -1,6 +1,6 @@
 type Survey {
   id: String!
-  userid: String!
+  user_id: String!
   created_at: Int!
   title: String!
   description: String!

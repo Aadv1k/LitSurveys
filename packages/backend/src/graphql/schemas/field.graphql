@@ -1,0 +1,27 @@
+type Field {
+  id: String!
+  survey_id: String!
+  type: String!
+  question: String!
+  response_options: String
+}
+
+input FieldInput {
+  type: String!
+  question: String!
+  response_options: String
+}
+
+input DeleteFieldInput {
+  survey_id: String!
+  id: String!
+}
+
+type Mutation {
+  createField(input: FieldInput!): Field
+  deleteField(input: DeleteFieldInput!): String
+}
+
+type Query {
+  field(survey_id: String): [Field]
+}

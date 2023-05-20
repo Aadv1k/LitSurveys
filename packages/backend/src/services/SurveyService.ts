@@ -27,10 +27,21 @@ export default class {
     userid: string
   ): Promise<Array<Survey>> {
     const surveys: any = await SurveyModel.findAll({
-      where: { userid: userid }
+      where: { user_id: userid }
     })
     return surveys as Array<Survey>
   }
+
+  public static async getSurveyByUserId(
+    surveyid: string,
+    userid: string
+  ): Promise<Array<Survey>> {
+    const surveys: any = await SurveyModel.findAll({
+      where: { user_id: userid, survey_id: surveyid }
+    })
+    return surveys as Array<Survey>
+  }
+
 
   public static async deleteSurveyById(id: string): Promise<boolean> {
     const deletedSurveyCount = await SurveyModel.destroy({ where: { id } })
