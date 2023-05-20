@@ -1,0 +1,25 @@
+union ResponseType = String | Int
+
+type Response {
+  id: String!
+  user_id: String!
+  survey_id: String!
+  field_id: String!
+  type: String!
+  response: ResponseType!
+}
+
+input ResponseInput {
+  survey_id: String!
+  field_id: String!
+  type: String!
+  response: ResponseType
+}
+
+type Mutation {
+  createResponse(input: ResponseInput!): Response
+}
+
+type Query {
+  responses(survey_id: String): [Response]
+}

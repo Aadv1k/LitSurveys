@@ -3,14 +3,14 @@ import { CommonContext } from '../../types'
 
 import { nanoid } from '../../utils'
 
-import { Field, FieldType } from '@litsurvey/common'
+import { Response, FieldType } from '@litsurvey/common'
 
 import jwt from 'jsonwebtoken'
 
-import FieldService from '../../services/FieldService'
+import ResponseService from '../../services/ResponseService'
 import SurveyService from '../../services/SurveyService'
 
-async function getFieldsForSurvey(input: any, args: CommonContext, __: any) {
+async function getResponsesForSurvey(input: any, args: CommonContext, __: any) {
   const auth = args.req.headers['authorization']
 
   if (!auth) {
@@ -24,13 +24,13 @@ async function getFieldsForSurvey(input: any, args: CommonContext, __: any) {
     throw new Error('Unauthorzied')
   }
 
-  const foundFields = await FieldService.getResponsesForSurveyId(
+  const foundResponses = await ResponseService.getResponsesForSurvey(
     input.survey_id
   )
-  return foundFields
+  return foundResponses
 }
 
-async function createFieldForSurvey(
+async function createResponseForSurvey(
   input: any,
   { req, res }: CommonContext,
   _: any
@@ -60,19 +60,19 @@ async function createFieldForSurvey(
     throw new Error('Invalid survey ID')
   }
 
-  const field: Field = {
+  const response: Response = {
     id: nanoid(),
     survey_id: input.survey_id,
     user_id: parsedAuth.id,
-    question: input.question,
-    response_options: input.response_options,
-    type: input.type
+    field_id: input.field_id,
+    type: input.type,
+    response: input.response
   }
-  await FieldService.createField(field)
-  return field
+  await ResponseService.createResponse(response)
+  return response
 }
 
 export default {
-  survey: getFieldsForSurvey,
-  createSurvey: createFieldForSurvey
+  survey: getResponsesForSurvey,
+  createSurvey: createResponseForSurvey
 }

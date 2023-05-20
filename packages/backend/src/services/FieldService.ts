@@ -24,7 +24,7 @@ export default class {
     return updatedFieldData?.toJSON() as Field
   }
 
-  public static async getFieldsBySurveyId(
+  public static async getResponsesForSurveyId(
     surveyid: string
   ): Promise<Array<Field>> {
     const fields: any = await FieldModel.findAll({
