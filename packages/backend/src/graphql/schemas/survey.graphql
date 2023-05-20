@@ -17,7 +17,7 @@ input SurveyInput {
 
 type Mutation {
   createSurvey(input: SurveyInput!): Survey
-  deleteSurvey(id: String!): Survey
+  deleteSurvey(id: String!): String
 }
 
 type Query {

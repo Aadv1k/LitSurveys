@@ -1,5 +1,5 @@
 import user from './user'
-import survey from "./survey";
+import survey from './survey'
 
 export default {
   ...user,

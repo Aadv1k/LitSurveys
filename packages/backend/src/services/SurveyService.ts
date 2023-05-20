@@ -23,9 +23,13 @@ export default class {
     return updatedUserData?.toJSON() as Survey
   }
 
-  public static async getSurveysByUserId(userid: string): Promise<Array<Survey>> {
-    const surveys: any = await SurveyModel.findAll({ where: { userid: userid } });
-    return surveys as Array<Survey>;
+  public static async getSurveysByUserId(
+    userid: string
+  ): Promise<Array<Survey>> {
+    const surveys: any = await SurveyModel.findAll({
+      where: { userid: userid }
+    })
+    return surveys as Array<Survey>
   }
 
   public static async deleteSurveyById(id: string): Promise<boolean> {
@@ -35,4 +39,13 @@ export default class {
     }
     return true
   }
+
+  public static async deleteSurveyByIdAndUserId(id: string, userid: string): Promise<boolean> {
+    const deletedSurveyCount = await SurveyModel.destroy({ where: { id, userid } })
+    if (deletedSurveyCount === 0) {
+      return false
+    }
+    return true
+  }
+
 }
