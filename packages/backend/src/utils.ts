@@ -1,6 +1,6 @@
 import Express from 'express'
 import { ApiError } from './const'
-import { customAlphabet } from "nanoid"
+import { customAlphabet } from 'nanoid'
 
 export function sendErrorResponse(res: Express.Response, error: ApiError) {
   res.status(error.status)
@@ -17,9 +17,10 @@ export function sendJSONResponse(
 }
 
 export function nanoid(): string {
-  const urlFriendlyChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
-  const idLength = 12;
-  const generateUrlFriendlyId = customAlphabet(urlFriendlyChars, idLength);
-  const id = generateUrlFriendlyId();
-  return id;
+  const urlFriendlyChars =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-'
+  const idLength = 12
+  const generateUrlFriendlyId = customAlphabet(urlFriendlyChars, idLength)
+  const id = generateUrlFriendlyId()
+  return id
 }

@@ -1,4 +1,3 @@
-import { User, UserType } from '@litsurvey/common'
 import { CommonContext } from '../../types'
 import { JWT_SECRET } from '../../const'
 import UserService from '../../services/UserService'
@@ -6,52 +5,9 @@ import UserService from '../../services/UserService'
 import jwt from 'jsonwebtoken'
 
 interface ReturnUser {
-  email: string
+  id: string,
   username: string
   token?: string
-}
-
-async function createUser(
-  input: { input: User },
-  args: User,
-  __: any
-): Promise<ReturnUser> {
-  const data = input.input as User
-  if (data.type !== 'surveyor' && data.type !== 'surveyee') {
-    throw new Error('Invalid user type')
-  }
-
-  const userToCreate = {
-    id: 'random',
-    username: data.username,
-    email: data.email,
-    password: data.password,
-    type: data.type
-  } as User
-
-  const foundUser = await UserService.getUserByEmail(userToCreate.email)
-
-  if (foundUser) {
-    throw new Error('User already exists!')
-  }
-
-  const createdUser = await UserService.createUser(userToCreate)
-
-  if (!createdUser) {
-    throw new Error('Failed to create user')
-  }
-
-  return {
-    username: createdUser.username,
-    email: createdUser.email,
-    token: jwt.sign(
-      {
-        username: createdUser.username,
-        email: createdUser.email
-      },
-      JWT_SECRET
-    )
-  }
 }
 
 async function getUser(
@@ -72,7 +28,7 @@ async function getUser(
     throw new Error('Invalid token') // TODO: Make this a proper error
   }
 
-  const foundUser = await UserService.getUserByEmail(parsedToken.email ?? '')
+  const foundUser = await UserService.getUserById(parsedToken.id ?? '')
 
   if (!foundUser) {
     throw new Error('User not found') // TODO: Make this a proper error
@@ -80,11 +36,11 @@ async function getUser(
 
   return {
     username: foundUser.username,
-    email: foundUser.email,
+    id: foundUser.id,
     token: jwt.sign(
       {
         username: foundUser.username,
-        email: foundUser.email
+        id: foundUser.id,
       },
       JWT_SECRET
     )
@@ -92,6 +48,5 @@ async function getUser(
 }
 
 export default {
-  createUser: createUser,
   user: getUser
 }

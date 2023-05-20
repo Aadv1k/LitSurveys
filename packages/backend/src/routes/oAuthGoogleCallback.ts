@@ -37,8 +37,8 @@ export default async function (req: Request, res: Response, passportUser: any) {
 
   if (foundUser) {
     await SessionService.push(sessionID, {
+      id: foundUser.id,
       username: foundUser.username,
-      email: foundUser.email,
       type: foundUser.type
     })
 
@@ -48,8 +48,8 @@ export default async function (req: Request, res: Response, passportUser: any) {
       res,
       {
         data: {
+          id: foundUser.id,
           username: foundUser.username,
-          email: foundUser.email,
           type: foundUser.type
         },
         status: 200
@@ -73,8 +73,8 @@ export default async function (req: Request, res: Response, passportUser: any) {
   }
 
   await SessionService.push(sessionID, {
+    id: createdUser.id,
     username: createdUser.username,
-    email: createdUser.email,
     type: createdUser.type
   })
 
@@ -84,8 +84,8 @@ export default async function (req: Request, res: Response, passportUser: any) {
     res,
     {
       data: {
+        id: createdUser.id,
         username: createdUser.username,
-        email: createdUser.email,
         type: createdUser.type
       },
       status: 200

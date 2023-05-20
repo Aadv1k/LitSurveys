@@ -5,7 +5,7 @@ import { ErrorCodes, JWT_SECRET } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
 import { LoginUser } from '../types'
 
-import md5 from "md5";
+import md5 from 'md5'
 
 import UserService from '../services/UserService'
 import SessionService from '../services/SessionService'
@@ -81,10 +81,10 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-  const sessionID = md5(foundUser.email);
+  const sessionID = md5(foundUser.email)
   await SessionService.push(sessionID, {
+    id: foundUser.id,
     username: foundUser.username,
-    email: foundUser.email,
     type: foundUser.type
   })
 
@@ -94,8 +94,8 @@ export default async function (req: Request, res: Response) {
     res,
     {
       data: {
+        id: foundUser.id,
         username: foundUser.username,
-        email: foundUser.email,
         type: foundUser.type
       },
       status: 200

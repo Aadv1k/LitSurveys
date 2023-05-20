@@ -54,7 +54,7 @@ export default async function (req: Request, res: Response) {
 
   const userToCreate = {
     ...body,
-    id: nanoid(),
+    id: nanoid()
   } as User
 
   const foundUser = await UserService.getUserByEmail(body.email)
@@ -85,8 +85,8 @@ export default async function (req: Request, res: Response) {
 
   const sessionID = nanoid()
   await SessionService.push(sessionID, {
+    id: createdUser.id,
     username: createdUser.username,
-    email: createdUser.email,
     type: createdUser.type
   })
 
@@ -96,8 +96,8 @@ export default async function (req: Request, res: Response) {
     res,
     {
       data: {
+        id: createdUser.id,
         username: createdUser.username,
-        email: createdUser.email,
         type: createdUser.type
       },
       status: 200
