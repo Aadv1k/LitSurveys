@@ -40,12 +40,16 @@ export default class {
     return true
   }
 
-  public static async deleteSurveyByIdAndUserId(id: string, userid: string): Promise<boolean> {
-    const deletedSurveyCount = await SurveyModel.destroy({ where: { id, userid } })
+  public static async deleteSurveyByIdAndUserId(
+    id: string,
+    userid: string
+  ): Promise<boolean> {
+    const deletedSurveyCount = await SurveyModel.destroy({
+      where: { id, userid }
+    })
     if (deletedSurveyCount === 0) {
       return false
     }
     return true
   }
-
 }
