@@ -5,7 +5,7 @@ import { ErrorCodes, JWT_SECRET } from '../const'
 import { sendErrorResponse, sendJSONResponse } from '../utils'
 import { LoginUser } from '../types'
 
-import { v4 as uuid } from 'uuid'
+import md5 from "md5";
 
 import UserService from '../services/UserService'
 import SessionService from '../services/SessionService'
@@ -81,7 +81,7 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-  const sessionID = uuid()
+  const sessionID = md5(foundUser.email);
   await SessionService.push(sessionID, {
     username: foundUser.username,
     email: foundUser.email,

@@ -1,18 +1,13 @@
 import { Request, Response } from 'express'
-import Ajv from 'ajv'
 import SessionService from '../services/SessionService'
 
 import { ErrorCodes } from '../const'
-import { sendErrorResponse, sendJSONResponse } from '../utils'
+import { sendErrorResponse, sendJSONResponse, nanoid } from '../utils'
 
 import md5 from 'md5'
 
 import { User } from '@litsurvey/common'
-
-import { v4 as uuid } from 'uuid'
 import UserService from '../services/UserService'
-
-//import passport from "passport";
 
 export default async function (req: Request, res: Response, passportUser: any) {
   const user = passportUser
@@ -30,9 +25,9 @@ export default async function (req: Request, res: Response, passportUser: any) {
 
   const userToCreate = {
     email: user.email,
-    password: md5(uuid()),
+    password: md5(nanoid()),
     username: user.displayName,
-    id: uuid(),
+    id: nanoid(),
     type: 'surveyee'
   } as User
 

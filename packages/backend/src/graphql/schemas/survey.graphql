@@ -19,4 +19,4 @@ type Mutation {
 
 type Query {
   survey: [Survey!]
-} 
+}

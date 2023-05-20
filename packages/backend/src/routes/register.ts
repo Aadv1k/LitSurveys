@@ -4,12 +4,11 @@ import Ajv from 'ajv'
 import SessionService from '../services/SessionService'
 
 import { ErrorCodes } from '../const'
-import { sendErrorResponse, sendJSONResponse } from '../utils'
+import { sendErrorResponse, sendJSONResponse, nanoid } from '../utils'
 import { RegisterUser } from '../types'
 
 import { User } from '@litsurvey/common'
 
-import { v4 as uuid } from 'uuid'
 import UserService from '../services/UserService'
 
 import RegisterSchema from '../httpSchemas/register'
@@ -55,7 +54,7 @@ export default async function (req: Request, res: Response) {
 
   const userToCreate = {
     ...body,
-    id: uuid()
+    id: nanoid(),
   } as User
 
   const foundUser = await UserService.getUserByEmail(body.email)
@@ -84,7 +83,7 @@ export default async function (req: Request, res: Response) {
     return
   }
 
-  const sessionID = uuid()
+  const sessionID = nanoid()
   await SessionService.push(sessionID, {
     username: createdUser.username,
     email: createdUser.email,
