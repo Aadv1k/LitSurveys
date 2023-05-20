@@ -1,5 +1,5 @@
 import SurveyModel from '../models/SurveyModel'
-import { Survey, SurveyStatus } from '@litsurvey/common/types/survey'
+import { Survey } from '@litsurvey/common'
 
 export default class {
   public static async createSurvey(survey: Survey): Promise<Survey> {
@@ -21,6 +21,11 @@ export default class {
     }
     const updatedUserData = await SurveyModel.findByPk(survey.id)
     return updatedUserData?.toJSON() as Survey
+  }
+
+  public static async getSurveysByUserId(userid: string): Promise<Array<Survey>> {
+    const surveys: any = await SurveyModel.findAll({ where: { userid: userid } });
+    return surveys as Array<Survey>;
   }
 
   public static async deleteSurveyById(id: string): Promise<boolean> {

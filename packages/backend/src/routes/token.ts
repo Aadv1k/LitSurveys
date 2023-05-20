@@ -36,7 +36,7 @@ export default async function (req: Request, res: Response) {
   const jwtToken = jwt.sign(
     {
       id: foundUser.id,
-      username: foundUser.username,
+      username: foundUser.username
     },
     JWT_SECRET,
     {

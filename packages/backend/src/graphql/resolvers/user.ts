@@ -5,7 +5,7 @@ import UserService from '../../services/UserService'
 import jwt from 'jsonwebtoken'
 
 interface ReturnUser {
-  id: string,
+  id: string
   username: string
   token?: string
 }
@@ -40,7 +40,7 @@ async function getUser(
     token: jwt.sign(
       {
         username: foundUser.username,
-        id: foundUser.id,
+        id: foundUser.id
       },
       JWT_SECRET
     )

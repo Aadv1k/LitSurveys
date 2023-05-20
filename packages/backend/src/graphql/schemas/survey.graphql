@@ -1,15 +1,18 @@
 type Survey {
+  id: String!
+  userid: String!
+  created_at: Int!
   title: String!
   description: String!
   status: String!
-  max_responses: Number!
+  max_responses: Int!
 }
 
 input SurveyInput {
   title: String!
   description: String!
   status: String!
-  max_responses: Number!
+  max_responses: Int!
 }
 
 type Mutation {
