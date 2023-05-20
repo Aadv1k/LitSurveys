@@ -71,6 +71,6 @@ async function createFieldForSurvey(
 }
 
 export default {
-  survey: getFieldsForSurvey,
-  createSurvey: createFieldForSurvey
+  field: getFieldsForSurvey,
+  createField: createFieldForSurvey
 }

@@ -19,11 +19,14 @@ function hasSpecialCharacters(title: string): boolean {
   return !pattern.test(title)
 }
 
-async function getSurvey(_: any, { req, res }: CommonContext, __: any) {
+async function getSurvey(
+  _: any,
+  { req, res }: CommonContext,
+  __: any
+): Promise<Array<Survey>> {
   if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
-
   let parsedToken: any
   try {
     const jwtToken = getAuth(req)?.[1]
@@ -31,7 +34,6 @@ async function getSurvey(_: any, { req, res }: CommonContext, __: any) {
   } catch {
     throw new Error('Unauthorized')
   }
-
   const foundSurveys = await SurveyService.getSurveysByUserId(parsedToken.id)
   return foundSurveys
 }

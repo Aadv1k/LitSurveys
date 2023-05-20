@@ -1,5 +1,6 @@
 import { CommonContext } from '../../types'
 import { JWT_SECRET } from '../../const'
+import { hasAuth, getAuth } from '../../utils'
 import UserService from '../../services/UserService'
 
 import jwt from 'jsonwebtoken'
@@ -12,20 +13,19 @@ interface ReturnUser {
 
 async function getUser(
   _: any,
-  args: CommonContext,
+  { req, res }: CommonContext,
   __: any
 ): Promise<ReturnUser> {
-  const token = args.req.headers?.authorization
-
-  if (!token) {
-    throw new Error('Unauthorized') // TODO: Make this a proper error
+  if (!hasAuth(req)) {
+    throw new Error('Unauthorized')
   }
 
   let parsedToken: any
   try {
-    parsedToken = jwt.verify(token, JWT_SECRET)
+    const jwtToken = getAuth(req)?.[1]
+    parsedToken = jwt.verify(jwtToken ?? '', JWT_SECRET)
   } catch {
-    throw new Error('Invalid token') // TODO: Make this a proper error
+    throw new Error('Unauthorized')
   }
 
   const foundUser = await UserService.getUserById(parsedToken.id ?? '')
