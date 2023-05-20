@@ -1,4 +1,13 @@
-union ResponseType = String | Int
+# https://stackoverflow.com/questions/50809147/how-do-i-specify-a-graphql-type-that-takes-multiple-types
+type IntBox {
+  value: Int
+}
+
+type StringBox {
+  value: String
+}
+
+union ResponseType = IntBox | StringBox
 
 type Response {
   id: String!
@@ -13,7 +22,7 @@ input ResponseInput {
   survey_id: String!
   field_id: String!
   type: String!
-  response: ResponseType
+  response: String!
 }
 
 type Mutation {

@@ -1,7 +1,7 @@
 import { JWT_SECRET } from '../../const'
 import { CommonContext } from '../../types'
 
-import { nanoid } from '../../utils'
+import { nanoid, hasAuth, getAuth } from '../../utils'
 
 import { Response, FieldType } from '@litsurvey/common'
 
@@ -10,18 +10,21 @@ import jwt from 'jsonwebtoken'
 import ResponseService from '../../services/ResponseService'
 import SurveyService from '../../services/SurveyService'
 
-async function getResponsesForSurvey(input: any, args: CommonContext, __: any) {
-  const auth = args.req.headers['authorization']
-
-  if (!auth) {
+async function getResponsesForSurvey(
+  input: any,
+  { req, res }: CommonContext,
+  __: any
+) {
+  if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
 
-  let parsedToken: any
+  let parsedAuth: any
   try {
-    parsedToken = jwt.verify(auth, JWT_SECRET)
+    const jwtToken = getAuth(req)?.[1]
+    parsedAuth = jwt.verify(jwtToken ?? '', JWT_SECRET)
   } catch {
-    throw new Error('Unauthorzied')
+    throw new Error('Unauthorized')
   }
 
   const foundResponses = await ResponseService.getResponsesForSurvey(
@@ -35,15 +38,15 @@ async function createResponseForSurvey(
   { req, res }: CommonContext,
   _: any
 ) {
-  const auth = req.headers['authorization']
-
-  if (!auth) {
+  if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
 
-  const parsedAuth: any = jwt.verify(auth, JWT_SECRET)
-
-  if (!parsedAuth || !parsedAuth.id) {
+  let parsedAuth: any
+  try {
+    const jwtToken = getAuth(req)?.[1]
+    parsedAuth = jwt.verify(jwtToken ?? '', JWT_SECRET)
+  } catch {
     throw new Error('Unauthorized')
   }
 
@@ -73,6 +76,6 @@ async function createResponseForSurvey(
 }
 
 export default {
-  survey: getResponsesForSurvey,
-  createSurvey: createResponseForSurvey
+  response: getResponsesForSurvey,
+  createResponse: createResponseForSurvey
 }

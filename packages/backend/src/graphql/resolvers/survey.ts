@@ -1,7 +1,7 @@
 import { JWT_SECRET } from '../../const'
 import { CommonContext } from '../../types'
 
-import { nanoid } from '../../utils'
+import { nanoid, hasAuth, getAuth } from '../../utils'
 
 import { Survey, SurveyStatus } from '@litsurvey/common'
 
@@ -19,33 +19,33 @@ function hasSpecialCharacters(title: string): boolean {
   return !pattern.test(title)
 }
 
-async function getSurvey(_: any, args: CommonContext, __: any) {
-  const auth = args.req.headers['authorization']
-
-  if (!auth) {
+async function getSurvey(_: any, { req, res }: CommonContext, __: any) {
+  if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
 
   let parsedToken: any
   try {
-    parsedToken = jwt.verify(auth, JWT_SECRET)
+    const jwtToken = getAuth(req)?.[1]
+    parsedToken = jwt.verify(jwtToken ?? '', JWT_SECRET)
   } catch {
-    throw new Error('Unauthorzied')
+    throw new Error('Unauthorized')
   }
+
   const foundSurveys = await SurveyService.getSurveysByUserId(parsedToken.id)
   return foundSurveys
 }
 
 async function createSurvey(input: any, { req, res }: CommonContext, _: any) {
-  const auth = req.headers['authorization']
-
-  if (!auth) {
+  if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
 
-  const parsedAuth: any = jwt.verify(auth, JWT_SECRET)
-
-  if (!parsedAuth || !parsedAuth.id) {
+  let parsedAuth: any
+  try {
+    const jwtToken = getAuth(req)?.[1]
+    parsedAuth = jwt.verify(jwtToken ?? '', JWT_SECRET)
+  } catch {
     throw new Error('Unauthorized')
   }
 

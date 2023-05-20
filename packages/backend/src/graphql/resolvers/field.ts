@@ -1,7 +1,7 @@
 import { JWT_SECRET } from '../../const'
 import { CommonContext } from '../../types'
 
-import { nanoid } from '../../utils'
+import { nanoid, hasAuth, getAuth } from '../../utils'
 
 import { Field, FieldType } from '@litsurvey/common'
 
@@ -11,17 +11,15 @@ import FieldService from '../../services/FieldService'
 import SurveyService from '../../services/SurveyService'
 
 async function getFieldsForSurvey(input: any, args: CommonContext, __: any) {
-  const auth = args.req.headers['authorization']
-
-  if (!auth) {
+  if (!hasAuth(args.req)) {
     throw new Error('Unauthorized')
   }
 
-  let parsedToken: any
   try {
-    parsedToken = jwt.verify(auth, JWT_SECRET)
+    const jwtToken = getAuth(args.req)?.[1]
+    jwt.verify(jwtToken ?? '', JWT_SECRET)
   } catch {
-    throw new Error('Unauthorzied')
+    throw new Error('Unauthorized')
   }
 
   const foundFields = await FieldService.getResponsesForSurveyId(
@@ -35,15 +33,15 @@ async function createFieldForSurvey(
   { req, res }: CommonContext,
   _: any
 ) {
-  const auth = req.headers['authorization']
-
-  if (!auth) {
+  if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
 
-  const parsedAuth: any = jwt.verify(auth, JWT_SECRET)
-
-  if (!parsedAuth || !parsedAuth.id) {
+  let parsedAuth: any
+  try {
+    const jwtToken = getAuth(req)?.[1]
+    parsedAuth = jwt.verify(jwtToken ?? '', JWT_SECRET)
+  } catch {
     throw new Error('Unauthorized')
   }
 

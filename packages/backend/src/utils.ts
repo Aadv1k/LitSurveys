@@ -16,6 +16,18 @@ export function sendJSONResponse(
   res.json(obj)
 }
 
+export function hasAuth(req: Express.Request): boolean {
+  const auth = req.headers['authorization']
+  if (!auth) return false
+  if (auth.split(' ').length !== 2) return false
+  return true
+}
+
+export function getAuth(req: Express.Request): [string, string] | null {
+  const auth = req?.headers['authorization']?.split(' ')
+  return auth ? [auth[0], auth[1]] : null
+}
+
 export function nanoid(): string {
   const urlFriendlyChars =
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-'
