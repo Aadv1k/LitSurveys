@@ -108,6 +108,7 @@ async function deleteSurvey(input: any, { req, res }: CommonContext, _: any) {
   if (!deletedSurvey) {
     throw new Error('No survey found with that criteria')
   }
+
   return input.id
 }
 

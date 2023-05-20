@@ -70,7 +70,42 @@ async function createFieldForSurvey(
   return field
 }
 
+async function deleteFieldForSurvey(
+  { input }: any,
+  { req, res }: CommonContext,
+  _: any
+) {
+  if (!hasAuth(req)) {
+    throw new Error('Unauthorized')
+  }
+
+  let parsedAuth: any
+  try {
+    const jwtToken = getAuth(req)?.[1]
+    parsedAuth = jwt.verify(jwtToken ?? '', JWT_SECRET)
+  } catch {
+    throw new Error('Unauthorized')
+  }
+
+  const foundSurvey = await SurveyService.getSurveyByUserId(
+    input.survey_id,
+    parsedAuth.id
+  )
+
+  if (foundSurvey.length === 0) {
+    throw new Error('Invalid survey ID')
+  }
+
+  const deleted = await FieldService.deleteFieldByUserId(
+    input.id,
+    parsedAuth.id
+  )
+
+  return deleted ? input.id : null
+}
+
 export default {
   field: getFieldsForSurvey,
-  createField: createFieldForSurvey
+  createField: createFieldForSurvey,
+  deleteField: deleteFieldForSurvey
 }

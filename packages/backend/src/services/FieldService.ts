@@ -33,6 +33,19 @@ export default class {
     return fields as Array<Field>
   }
 
+  public static async deleteFieldByUserId(
+    id: string,
+    userid: string
+  ): Promise<boolean> {
+    const deletedFieldCount = await FieldModel.destroy({
+      where: { id: id, user_id: userid }
+    })
+    if (deletedFieldCount === 0) {
+      return false
+    }
+    return true
+  }
+
   public static async deleteFieldById(id: string): Promise<boolean> {
     const deletedFieldCount = await FieldModel.destroy({ where: { id } })
     if (deletedFieldCount === 0) {

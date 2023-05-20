@@ -37,7 +37,7 @@ export default class {
     userid: string
   ): Promise<Array<Survey>> {
     const surveys: any = await SurveyModel.findAll({
-      where: { user_id: userid, survey_id: surveyid }
+      where: { user_id: userid, id: surveyid }
     })
     return surveys as Array<Survey>
   }
