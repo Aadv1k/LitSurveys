@@ -42,7 +42,6 @@ export default class {
     return surveys as Array<Survey>
   }
 
-
   public static async deleteSurveyById(id: string): Promise<boolean> {
     const deletedSurveyCount = await SurveyModel.destroy({ where: { id } })
     if (deletedSurveyCount === 0) {

@@ -24,7 +24,7 @@ async function getFieldsForSurvey(input: any, args: CommonContext, __: any) {
     throw new Error('Unauthorzied')
   }
 
-  const foundFields = await FieldService.getFieldsBySurveyId(input.survey_id);
+  const foundFields = await FieldService.getFieldsBySurveyId(input.survey_id)
   return foundFields
 }
 
@@ -49,10 +49,13 @@ async function createFieldForSurvey(
     throw new Error('Bad input, bad field type')
   }
 
-  const foundSurvey = await SurveyService.getSurveyByUserId(input.survey_id, parsedAuth.id);
+  const foundSurvey = await SurveyService.getSurveyByUserId(
+    input.survey_id,
+    parsedAuth.id
+  )
 
   if (foundSurvey.length === 0) {
-    throw new Error('Invalid survey ID');
+    throw new Error('Invalid survey ID')
   }
 
   const field: Field = {
@@ -63,11 +66,11 @@ async function createFieldForSurvey(
     response_options: input.response_options,
     type: input.type
   }
-  await FieldService.createField(field);
+  await FieldService.createField(field)
   return field
 }
 
 export default {
   survey: getFieldsForSurvey,
-  createSurvey: createFieldForSurvey,
+  createSurvey: createFieldForSurvey
 }
