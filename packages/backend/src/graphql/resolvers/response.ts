@@ -62,15 +62,14 @@ async function createResponseForSurvey(
   }
 
   if (foundField.type !== input.type) {
-    throw new Error("field type and input type mismatch");
+    throw new Error('field type and input type mismatch')
   }
 
-  if (foundField.type !== "any") {
+  if (foundField.type !== 'any') {
     if (!Number(input.response)) {
       throw new Error(`${foundField.type} expects a integer as a response`)
     }
   }
-
 
   const response: Response = {
     id: nanoid(),

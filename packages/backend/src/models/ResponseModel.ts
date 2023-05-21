@@ -9,7 +9,6 @@ const ResponseModel = {
     allowNull: false
   },
 
-
   field_id: {
     type: DataTypes.STRING,
     allowNull: false

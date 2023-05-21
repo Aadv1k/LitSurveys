@@ -47,15 +47,19 @@ async function createFieldForSurvey(
     throw new Error('Bad input, bad field type')
   }
 
-  let responseOpts = input.response_options;
+  let responseOpts = input.response_options
   if (input.type !== FieldType.any) {
     if (!input.response_options) {
-      throw new Error(`For ${input.type} you need to specify options as a comma separated string`)
+      throw new Error(
+        `For ${input.type} you need to specify options as a comma separated string`
+      )
     }
-    const options = responseOpts.split(",")
+    const options = responseOpts.split(',')
 
     if (options.length <= 1) {
-      throw new Error(`Too few options specified for ${input.type}; you need to specify options as a comma separated string`)
+      throw new Error(
+        `Too few options specified for ${input.type}; you need to specify options as a comma separated string`
+      )
     }
   }
 
