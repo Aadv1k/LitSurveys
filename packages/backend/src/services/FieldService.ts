@@ -24,6 +24,15 @@ export default class {
     return updatedFieldData?.toJSON() as Field
   }
 
+
+  public static async getField(id: string): Promise<Field | null> {
+    const field = await FieldModel.findOne({
+      where: { id }
+    })
+
+    return field?.toJSON() ?? null;
+  }
+
   public static async getFieldsForSurvey(
     surveyid: string
   ): Promise<Array<Field>> {

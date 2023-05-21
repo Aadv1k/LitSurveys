@@ -47,6 +47,18 @@ async function createFieldForSurvey(
     throw new Error('Bad input, bad field type')
   }
 
+  let responseOpts = input.response_options;
+  if (input.type !== FieldType.any) {
+    if (!input.response_options) {
+      throw new Error(`For ${input.type} you need to specify options as a comma separated string`)
+    }
+    const options = responseOpts.split(",")
+
+    if (options.length <= 1) {
+      throw new Error(`Too few options specified for ${input.type}; you need to specify options as a comma separated string`)
+    }
+  }
+
   const foundSurvey = await SurveyService.getSurvey(input.survey_id)
 
   if (!foundSurvey) {
@@ -60,9 +72,8 @@ async function createFieldForSurvey(
   const field: Field = {
     id: nanoid(),
     survey_id: input.survey_id,
-    user_id: parsedAuth.id,
     question: input.question,
-    response_options: input.response_options,
+    response_options: responseOpts,
     type: input.type
   }
 

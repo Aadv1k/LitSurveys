@@ -19,7 +19,6 @@ type Response {
 }
 
 input ResponseInput {
-  survey_id: String!
   field_id: String!
   type: String!
   response: String!

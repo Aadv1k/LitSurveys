@@ -9,10 +9,6 @@ const ResponseModel = {
     allowNull: false
   },
 
-  survey_id: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
 
   field_id: {
     type: DataTypes.STRING,

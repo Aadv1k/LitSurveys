@@ -3,10 +3,6 @@ import { Survey } from '@litsurvey/common'
 
 export default class {
   public static async createSurvey(survey: Survey): Promise<Survey> {
-    console.log({
-      ...survey
-    })
-
     const createdSurvey = await SurveyModel.create({
       ...survey
     })
