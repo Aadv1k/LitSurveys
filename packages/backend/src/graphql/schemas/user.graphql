@@ -1,9 +1,26 @@
+#import Survey from "./survey.graphql"
+#import Field from "./field.graphql"
+#import Response from "./response.graphql"
+
 type User {
   id: String!
   username: String!
   token: String
 }
 
+input TakeoutMenu {
+  surveys: Boolean
+  fields: Boolean
+  responses: Boolean
+}
+
+type TakeoutOutput {
+  surveys: [Survey]
+  fields: [Field]
+  responses: [Response]
+}
+
 type Query {
   user: User
+  takeout(input: TakeoutMenu): TakeoutOutput
 }

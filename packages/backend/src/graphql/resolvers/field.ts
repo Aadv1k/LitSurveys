@@ -22,7 +22,7 @@ async function getFieldsForSurvey(input: any, args: CommonContext, __: any) {
     throw new Error('Unauthorized')
   }
 
-  const foundFields = await FieldService.getResponsesForSurveyId(
+  const foundFields = await FieldService.getFieldsForSurvey(
     input.survey_id
   )
   return foundFields
