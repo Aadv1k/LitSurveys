@@ -29,8 +29,8 @@ const SurveyModel = {
     allowNull: false
   },
 
-  maxResposnes: {
-    type: DataTypes.STRING,
+  max_responses: {
+    type: DataTypes.INTEGER,
     allowNull: false
   }
 }

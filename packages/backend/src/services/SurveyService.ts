@@ -3,10 +3,14 @@ import { Survey } from '@litsurvey/common'
 
 export default class {
   public static async createSurvey(survey: Survey): Promise<Survey> {
-    const createdUser = await SurveyModel.create({
+    console.log({
       ...survey
     })
-    return createdUser.toJSON() as Survey
+
+    const createdSurvey = await SurveyModel.create({
+      ...survey
+    })
+    return createdSurvey.toJSON() as Survey
   }
 
   public static async updateSurvey(survey: Survey): Promise<Survey | null> {
@@ -26,17 +30,15 @@ export default class {
   public static async getSurveysByUserId(
     userid: string
   ): Promise<Array<Survey>> {
-    const surveys: any = await SurveyModel.findAll({
-      where: { user_id: userid }
-    })
+    const surveys: any = await SurveyModel.findAll()
     return surveys as Array<Survey>
   }
 
   public static async getSurvey(surveyid: string): Promise<Survey> {
-    const survey: any = await SurveyModel.findAll({
+    const survey: any = await SurveyModel.findOne({
       where: { id: surveyid }
     })
-    return survey
+    return survey.toJSON()
   }
 
   public static async deleteSurvey(id: string): Promise<boolean> {

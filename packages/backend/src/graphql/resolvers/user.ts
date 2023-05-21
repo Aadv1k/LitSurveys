@@ -46,17 +46,21 @@ async function takeoutData(
   }
 
   if (input.responses === true) {
-    const foundResponses = foundSurveys.map(async (e) => {
-      return await ResponseService.getResponsesForSurvey(e.id)
-    })
-    blob.responses = foundResponses
+    const foundResponses = await Promise.all(
+      foundSurveys.map(async (e) => {
+        return await ResponseService.getResponsesForSurvey(e.id)
+      })
+    )
+    blob.responses = foundResponses.pop()
   }
 
   if (input.fields === true) {
-    const foundFields = foundSurveys.map(async (e) => {
-      return await FieldService.getFieldsForSurvey(e.id)
-    })
-    blob.fields = foundFields
+    const foundFields = await Promise.all(
+      foundSurveys.map(async (e) => {
+        return await FieldService.getFieldsForSurvey(e.id)
+      })
+    )
+    blob.fields = foundFields.pop()
   }
 
   return blob

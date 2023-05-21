@@ -1,4 +1,4 @@
-import FieldModel from '../models/SurveyModel'
+import FieldModel from '../models/FieldModel'
 import { Field } from '@litsurvey/common'
 
 export default class {
@@ -30,7 +30,9 @@ export default class {
     const fields: any = await FieldModel.findAll({
       where: { survey_id: surveyid }
     })
-    return fields as Array<Field>
+
+    // ???
+    return JSON.parse(JSON.stringify(fields))
   }
 
   public static async deleteFieldByUserId(

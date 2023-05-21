@@ -9,6 +9,7 @@ type Field {
 input FieldInput {
   type: String!
   question: String!
+  survey_id: String!
   response_options: String
 }
 

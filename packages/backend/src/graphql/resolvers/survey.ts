@@ -38,7 +38,11 @@ async function getSurvey(
   return foundSurveys
 }
 
-async function createSurvey(input: any, { req, res }: CommonContext, _: any) {
+async function createSurvey(
+  { input }: any,
+  { req, res }: CommonContext,
+  _: any
+) {
   if (!hasAuth(req)) {
     throw new Error('Unauthorized')
   }
@@ -70,7 +74,7 @@ async function createSurvey(input: any, { req, res }: CommonContext, _: any) {
     throw new Error('Bad input, description too long or short')
   }
 
-  if (input.max_responses < SURVEY_MAX_RESPONSES) {
+  if (input.max_responses > SURVEY_MAX_RESPONSES) {
     throw new Error('Bad input, cant have that many responses')
   }
 

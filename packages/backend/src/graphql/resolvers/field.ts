@@ -27,7 +27,7 @@ async function getFieldsForSurvey(input: any, args: CommonContext, __: any) {
 }
 
 async function createFieldForSurvey(
-  input: any,
+  { input }: any,
   { req, res }: CommonContext,
   _: any
 ) {
@@ -65,6 +65,7 @@ async function createFieldForSurvey(
     response_options: input.response_options,
     type: input.type
   }
+
   await FieldService.createField(field)
   return field
 }
