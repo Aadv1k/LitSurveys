@@ -54,12 +54,9 @@ async function createResponseForSurvey(
     throw new Error('Bad input, bad field type')
   }
 
-  const foundSurvey = await SurveyService.getSurveyByUserId(
-    input.survey_id,
-    parsedAuth.id
-  )
+  const foundSurvey = await SurveyService.getSurvey(input.survey_id)
 
-  if (foundSurvey.length === 0) {
+  if (!foundSurvey) {
     throw new Error('Invalid survey ID')
   }
 

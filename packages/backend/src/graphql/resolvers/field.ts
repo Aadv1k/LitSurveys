@@ -49,13 +49,14 @@ async function createFieldForSurvey(
     throw new Error('Bad input, bad field type')
   }
 
-  const foundSurvey = await SurveyService.getSurveyByUserId(
-    input.survey_id,
-    parsedAuth.id
-  )
+  const foundSurvey = await SurveyService.getSurvey(input.survey_id)
 
-  if (foundSurvey.length === 0) {
+  if (!foundSurvey) {
     throw new Error('Invalid survey ID')
+  }
+
+  if (foundSurvey.user_id !== parsedAuth.id) {
+    throw new Error("you don't own this survey")
   }
 
   const field: Field = {
@@ -87,13 +88,14 @@ async function deleteFieldForSurvey(
     throw new Error('Unauthorized')
   }
 
-  const foundSurvey = await SurveyService.getSurveyByUserId(
-    input.survey_id,
-    parsedAuth.id
-  )
+  const foundSurvey = await SurveyService.getSurvey(input.survey_id)
 
-  if (foundSurvey.length === 0) {
+  if (!foundSurvey) {
     throw new Error('Invalid survey ID')
+  }
+
+  if (foundSurvey.user_id !== parsedAuth.id) {
+    throw new Error("you don't own this survey")
   }
 
   const deleted = await FieldService.deleteFieldByUserId(

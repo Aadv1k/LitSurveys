@@ -32,30 +32,16 @@ export default class {
     return surveys as Array<Survey>
   }
 
-  public static async getSurveyByUserId(
-    surveyid: string,
-    userid: string
-  ): Promise<Array<Survey>> {
-    const surveys: any = await SurveyModel.findAll({
-      where: { user_id: userid, id: surveyid }
+  public static async getSurvey(surveyid: string): Promise<Survey> {
+    const survey: any = await SurveyModel.findAll({
+      where: { id: surveyid }
     })
-    return surveys as Array<Survey>
+    return survey
   }
 
-  public static async deleteSurveyById(id: string): Promise<boolean> {
-    const deletedSurveyCount = await SurveyModel.destroy({ where: { id } })
-    if (deletedSurveyCount === 0) {
-      return false
-    }
-    return true
-  }
-
-  public static async deleteSurveyByIdAndUserId(
-    id: string,
-    userid: string
-  ): Promise<boolean> {
+  public static async deleteSurvey(id: string): Promise<boolean> {
     const deletedSurveyCount = await SurveyModel.destroy({
-      where: { id, userid }
+      where: { id }
     })
     if (deletedSurveyCount === 0) {
       return false

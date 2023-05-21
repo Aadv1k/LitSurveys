@@ -101,10 +101,18 @@ async function deleteSurvey(input: any, { req, res }: CommonContext, _: any) {
     throw new Error('Unauthorized')
   }
 
-  const deletedSurvey = await SurveyService.deleteSurveyByIdAndUserId(
-    input,
-    parsedAuth.id
-  )
+  const foundSurvey = await SurveyService.getSurvey(input)
+
+  if (!foundSurvey) {
+    throw new Error('Invalid Survey ID')
+  }
+
+  if (foundSurvey.user_id !== parsedAuth.id) {
+    throw new Error('You do not own this survey')
+  }
+
+  const deletedSurvey = await SurveyService.deleteSurvey(input)
+
   if (!deletedSurvey) {
     throw new Error('No survey found with that criteria')
   }
