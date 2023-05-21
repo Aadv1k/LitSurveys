@@ -3,10 +3,9 @@ import { JWT_SECRET } from '../../const'
 import { hasAuth, getAuth } from '../../utils'
 
 import UserService from '../../services/UserService'
-import SurveyService from '../../services/SurveyService';
-import FieldService from '../../services/FieldService';
-import ResponseService from '../../services/ResponseService';
-
+import SurveyService from '../../services/SurveyService'
+import FieldService from '../../services/FieldService'
+import ResponseService from '../../services/ResponseService'
 
 import jwt from 'jsonwebtoken'
 
@@ -15,7 +14,6 @@ interface ReturnUser {
   username: string
   token?: string
 }
-
 
 async function takeoutData(
   { input }: any,
@@ -40,30 +38,28 @@ async function takeoutData(
     throw new Error('User not found') // TODO: Make this a proper error
   }
 
+  const blob = {} as any
 
-  const blob = {
-  } as any;
-
-  let foundSurveys = await SurveyService.getSurveysByUserId(parsedToken.id);
+  let foundSurveys = await SurveyService.getSurveysByUserId(parsedToken.id)
   if (input.surveys === true) {
-    blob.surveys = foundSurveys;
+    blob.surveys = foundSurveys
   }
 
   if (input.responses === true) {
-    const foundResponses = foundSurveys.map(async e => {
+    const foundResponses = foundSurveys.map(async (e) => {
       return await ResponseService.getResponsesForSurvey(e.id)
-    });
-    blob.responses = foundResponses;
+    })
+    blob.responses = foundResponses
   }
 
   if (input.fields === true) {
-    const foundFields = foundSurveys.map(async e => {
+    const foundFields = foundSurveys.map(async (e) => {
       return await FieldService.getFieldsForSurvey(e.id)
-    });
-    blob.fields = foundFields;
+    })
+    blob.fields = foundFields
   }
 
-  return blob;
+  return blob
 }
 
 async function getUser(
